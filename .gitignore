@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pyo
+
+.venv/
+data/Movies_and_TV_5.json
+data/meta_Movies_and_TV.json
+
+.ipynb_checkpoints/
