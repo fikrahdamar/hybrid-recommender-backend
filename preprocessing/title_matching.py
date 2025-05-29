@@ -1,6 +1,7 @@
 from rapidfuzz import fuzz
 import re
 import string
+from tqdm import tqdm
 
 def preprocess_title(title):
     title = title.lower()
@@ -13,7 +14,7 @@ def get_best_matches(source_titles, target_titles, threshold=90):
     matches = {}
     target_processed = {title: preprocess_title(title) for title in target_titles}
     
-    for source in source_titles:
+    for source in tqdm(source_titles, desc="Matching titles"):
         source_proc = preprocess_title(source)
         best_match = None
         best_score = 0

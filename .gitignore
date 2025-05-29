@@ -1,9 +1,25 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
 
+# Virtual environment
 .venv/
+env/
+venv/
+
+# VS Code settings
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Dataset besar (optional, tergantung apakah mau di-track atau tidak)
 data/Movies_and_TV_5.json
 data/meta_Movies_and_TV.json
 
-.ipynb_checkpoints/
+# MacOS
+.DS_Store
+
+# Log dan cache lain
+*.log
