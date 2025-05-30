@@ -1,3 +1,4 @@
+from utils import load_csv, save_csv, ensure_dir
 import json
 import pandas as pd
 from preprocessing import get_best_matches
@@ -5,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # load data ml_merged buat sourcenya
-ml_df = pd.read_csv('./data/ml_merged.csv')
+ml_df = load_csv('./data/ml_merged.csv')
 source_titles= ml_df['title'].unique().tolist()
 
 # load metadata amazon buat targetnya
@@ -41,7 +42,7 @@ for source, (matched_title, score) in matches.items():
     })
 
 matched_df = pd.DataFrame(results)
-matched_df.to_csv('./data/matched_titles.csv', index=False)
+save_csv(matched_df, './data/matched_titles.csv')
 print(f"Saved {len(matched_df)} matched titles.")
 
 plt.figure(figsize=(8, 5))
@@ -51,6 +52,7 @@ plt.xlabel('Fuzzy Score')
 plt.ylabel('Jumlah Judul')
 plt.grid(True)
 plt.tight_layout()
+ensure_dir('./data/img')
 plt.savefig('./data/img/fuzzy_score_distribution.png')
 plt.show()
 

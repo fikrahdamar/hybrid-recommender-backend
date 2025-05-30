@@ -14,12 +14,13 @@ venv/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Dataset besar (optional, tergantung apakah mau di-track atau tidak)
+# Dataset besar
 data/Movies_and_TV_5.json
 data/meta_Movies_and_TV.json
+data/matched_amazon_reviews.jsonl
 
 # MacOS
 .DS_Store
 
-# Log dan cache lain
+# Log dan cache 
 *.log

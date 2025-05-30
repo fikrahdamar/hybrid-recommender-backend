@@ -1,14 +1,7 @@
 from rapidfuzz import fuzz
-import re
-import string
 from tqdm import tqdm
+from .text_cleaning import preprocess_title
 
-def preprocess_title(title):
-    title = title.lower()
-    title = re.sub(r'\(\d{4}\)', '', title)  # hapus tahun
-    title = title.translate(str.maketrans('', '', string.punctuation))  # hapus tanda baca
-    title = re.sub(r'\s+', ' ', title).strip()
-    return title
 
 def get_best_matches(source_titles, target_titles, threshold=90):
     matches = {}
