@@ -6,6 +6,7 @@ from preprocessing import preprocess_title
 
 def load_and_preprocess_reviews(jsonl_path, max_samples=None):
     texts = []
+    asin_list = []
     with open(jsonl_path, 'r') as f:
         for line in f:
             item = json.loads(line)
@@ -13,9 +14,10 @@ def load_and_preprocess_reviews(jsonl_path, max_samples=None):
             review = item.get('reviewText', '')
             combined = preprocess_title(summary + ' ' + review)
             texts.append(combined)
+            asin_list.append(item['asin'])
             if max_samples and len(texts) >= max_samples:
                 break
-    return texts
+    return texts, asin_list
 
 def prepare_tokenizer(texts, num_words=20000):
     tokenizer = Tokenizer(num_words=num_words, oov_token='<OOV>')
