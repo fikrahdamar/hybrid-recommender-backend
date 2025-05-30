@@ -59,7 +59,7 @@ try:
     plt.xlabel("PC 1")
     plt.ylabel("PC 2")
     plt.grid(True)
-    plt.savefig('./data/q_i_pca_visualization.png')
+    plt.savefig('./data/img/q_i_pca_visualization.png')
     plt.show()
 except Exception as e:
     print(f"❌ PCA visualization failed: {e}")

@@ -18,6 +18,7 @@ venv/
 data/Movies_and_TV_5.json
 data/meta_Movies_and_TV.json
 data/matched_amazon_reviews.jsonl
+data/encoded_amazon_vectors.csv
 
 # MacOS
 .DS_Store
