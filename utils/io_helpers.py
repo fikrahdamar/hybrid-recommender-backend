@@ -19,5 +19,3 @@ def load_csv(file_path):
 def save_csv(df, file_path):
     df.to_csv(file_path, index=False)
 
-def ensure_dir(path):
-    os.makedirs(path, exist_ok=True)
