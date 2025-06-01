@@ -19,3 +19,7 @@ def load_csv(file_path):
 def save_csv(df, file_path):
     df.to_csv(file_path, index=False)
 
+def ensure_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
