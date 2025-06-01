@@ -18,28 +18,53 @@ class PMFTrainer3:
         self.losses = []
         self.val_losses = []
 
-    def load_item_factors(self, encoded_amazon_vectors_path, mapping_path):
-        df_qi_raw = pd.read_csv(encoded_amazon_vectors_path, dtype=str).apply(pd.to_numeric, errors="coerce")
-        df_mapping = pd.read_csv(mapping_path)
+    def load_item_factors(self, encoded_amazon_vectors_path, mapping_path, target_std=1.5):
+        # Load encoded item vectors
+        df_qi = pd.read_csv(encoded_amazon_vectors_path, low_memory=False)
+        df_qi["asin"] = df_qi["asin"].astype(str).str.strip().str.upper()
 
-        df_qi_raw.set_index("asin", inplace=True)
-        q_i = np.zeros((self.n_items, self.n_factors))
+
+        vector_cols = df_qi.drop(columns=["asin"]).apply(pd.to_numeric, errors="coerce").astype(np.float32)
+        df_qi_clean = pd.concat([df_qi["asin"], vector_cols], axis=1)
+
+        # Rata-ratakan embedding jika 1 asin muncul lebih dari 1 kali
+        df_qi_grouped = df_qi_clean.groupby("asin").mean()
+
+        # Load mapping item_index → asin
+        df_mapping = pd.read_csv(mapping_path)
+        df_mapping["asin"] = df_mapping["asin"].astype(str).str.strip().str.upper()
+
+        # Siapkan matrix kosong
+        q_i = np.zeros((self.n_items, self.n_factors), dtype=np.float32)
         missing_count = 0
-        valid_items = set()
 
         for _, row in df_mapping.iterrows():
             item_idx = int(row["item_index"])
             asin = row["asin"]
 
-            if asin in df_qi_raw.index:
-                q_i[item_idx] = df_qi_raw.loc[asin].values
-                valid_items.add(item_idx)
+            if asin in df_qi_grouped.index:
+                vector = df_qi_grouped.loc[asin].to_numpy()
+                if vector.shape[0] == self.n_factors:
+                    q_i[item_idx] = vector
+                else:
+                    print(f"[WARNING] ASIN {asin} vektor tidak sesuai dimensi, di-skip.")
+                    q_i[item_idx] = np.random.normal(scale=0.1, size=self.n_factors)
+                    missing_count += 1
             else:
-                # Jangan isi vector random — kita anggap saja tidak ada
+                print(f"[WARNING] ASIN {asin} tidak ditemukan di encoded vectors.")
+                q_i[item_idx] = np.random.normal(scale=0.1, size=self.n_factors)
                 missing_count += 1
 
-        print(f"Missing ASIN vectors: {missing_count}")
-        return q_i, valid_items
+        # Rescale q_i
+        mean = np.mean(q_i)
+        std = np.std(q_i)
+        q_i_rescaled = (q_i - mean) / std * target_std
+
+        print(f"[INFO] Finished loading item factors.")
+        print(f"[INFO] Missing/invalid ASIN vectors: {missing_count}")
+        print(f"[INFO] Shape of q_i: {q_i.shape}")
+        print(f"[INFO] Rescaled q_i to target std: {target_std}")
+        return q_i_rescaled
 
 
     def predict_all(self, df, q_i, output_path="prediction.csv"):
@@ -51,7 +76,9 @@ class PMFTrainer3:
             u = int(row["user_index"])
             i = int(row["item_index"])
             r_ui = float(row["rating"])
+            # pred = np.dot(self.user_factors[u], q_i[i])
             pred = np.dot(self.user_factors[u], q_i[i])
+            pred = np.clip(pred, 0.5, 5.0)
             result.append({
                 "user_index": u,
                 "item_index": i,
@@ -72,7 +99,6 @@ class PMFTrainer3:
             r_ui = float(row["rating"])
 
             pred = np.dot(self.user_factors[u], q_i[i])
-            pred = np.clip(pred, 0, 1)
             errors.append((r_ui - pred) ** 2)
         return np.sqrt(np.mean(errors))
 
