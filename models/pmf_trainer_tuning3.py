@@ -14,21 +14,18 @@ class PMFTrainer3:
         self.reg = reg
         self.epochs = epochs
 
-        self.user_factors = np.random.normal(scale=0.1, size=(n_users, n_factors))  # p_u
+        self.user_factors = np.random.normal(scale=0.1, size=(n_users, n_factors))  
         self.losses = []
         self.val_losses = []
 
     def load_item_factors(self, encoded_amazon_vectors_path, mapping_path):
         df_qi_raw = pd.read_csv(encoded_amazon_vectors_path, dtype=str).apply(pd.to_numeric, errors="coerce")
-        df_mapping = pd.read_csv(mapping_path)  # berisi: item_index, asin
+        df_mapping = pd.read_csv(mapping_path)
 
-        # Pastikan ASIN menjadi indeks
         df_qi_raw.set_index("asin", inplace=True)
-
-        # Siapkan q_i dengan ukuran total item (MovieLens)
         q_i = np.zeros((self.n_items, self.n_factors))
-
         missing_count = 0
+        valid_items = set()
 
         for _, row in df_mapping.iterrows():
             item_idx = int(row["item_index"])
@@ -36,13 +33,13 @@ class PMFTrainer3:
 
             if asin in df_qi_raw.index:
                 q_i[item_idx] = df_qi_raw.loc[asin].values
+                valid_items.add(item_idx)
             else:
-                # Random fallback (atau bisa diisi rata-rata)
-                q_i[item_idx] = np.random.normal(scale=0.1, size=self.n_factors)
+                # Jangan isi vector random — kita anggap saja tidak ada
                 missing_count += 1
 
         print(f"Missing ASIN vectors: {missing_count}")
-        return q_i
+        return q_i, valid_items
 
 
     def predict_all(self, df, q_i, output_path="prediction.csv"):
@@ -75,6 +72,7 @@ class PMFTrainer3:
             r_ui = float(row["rating"])
 
             pred = np.dot(self.user_factors[u], q_i[i])
+            pred = np.clip(pred, 0, 1)
             errors.append((r_ui - pred) ** 2)
         return np.sqrt(np.mean(errors))
 

@@ -20,6 +20,7 @@ data/Movies_and_TV_5.json
 data/meta_Movies_and_TV.json
 data/matched_amazon_reviews.jsonl
 data/encoded_amazon_vectors.csv
+data/encoded_amazon_vectors_new.csv
 data/sample_qi_vectors.csv
 
 # MacOS
