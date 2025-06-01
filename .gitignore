@@ -7,6 +7,7 @@ __pycache__/
 .venv/
 env/
 venv/
+venv311/
 
 # VS Code settings
 .vscode/
@@ -19,6 +20,7 @@ data/Movies_and_TV_5.json
 data/meta_Movies_and_TV.json
 data/matched_amazon_reviews.jsonl
 data/encoded_amazon_vectors.csv
+data/sample_qi_vectors.csv
 
 # MacOS
 .DS_Store
