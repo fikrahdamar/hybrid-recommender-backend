@@ -16,6 +16,7 @@ venv311/
 .ipynb_checkpoints/
 
 # Dataset besar
+data/data_optimal_encoded/
 data/Movies_and_TV_5.json
 data/meta_Movies_and_TV.json
 data/matched_amazon_reviews.jsonl

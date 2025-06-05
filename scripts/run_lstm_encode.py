@@ -39,7 +39,7 @@ q_i_matrix = np.vstack(all_embeddings)
 # === Simpan output ===
 df_output = pd.DataFrame(q_i_matrix)
 df_output['asin'] = asin_list
-df_output.to_csv('./data/encoded_amazon_vectors.csv', index=False)
+df_output.to_csv('./data/encoded_amazon_vectors[2].csv', index=False)
 
 with open('./data/tokenizer.pkl', 'wb') as f:
     pickle.dump(tokenizer, f)
