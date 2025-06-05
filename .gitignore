@@ -16,10 +16,11 @@ venv311/
 .ipynb_checkpoints/
 
 # Dataset besar
-data/data_optimal_encoded/
-data/Movies_and_TV_5.json
-data/meta_Movies_and_TV.json
-data/matched_amazon_reviews.jsonl
+data/encoded/encoded_amazon_vectors.csv
+data/encoded/encoded_amazon_vectors_new.csv
+data/raw_data/Movies_and_TV_5.json
+data/raw_data/meta_Movies_and_TV.json
+data/processed/matched_amazon_reviews.jsonl
 data/encoded_amazon_vectors.csv
 data/scaled_encoded_amazon_vectors.csv
 data/encoded_amazon_vectors_new.csv

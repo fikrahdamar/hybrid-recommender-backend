@@ -54,7 +54,7 @@ with open('./data/tokenizer.pkl', 'wb') as f:
 autoencoder.save_weights('./models/models_optimal/lstm_autoencoder_weights.h5')
 print("✅ Encoding selesai dan disimpan.")
 
-# === PCA Visualize ===
+
 try:
     print("🔍 Visualizing 2D representation of q_i via PCA...")
     pca = PCA(n_components=2)
