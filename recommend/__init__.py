@@ -1,1 +1,1 @@
-from .recommender import HybridRecommender
+from .recommender import HybridRecommender,get_rated_item_indices
