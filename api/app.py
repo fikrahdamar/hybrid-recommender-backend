@@ -2,8 +2,17 @@ from fastapi import FastAPI, HTTPException, Query
 from recommend import HybridRecommender, get_rated_item_indices
 from typing import List
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Ganti sesuai alamat frontend Anda, atau pakai ["*"] untuk development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load recommender saat server startup
 user_factors_path = os.path.join("data", "output", "user_factors.npy")

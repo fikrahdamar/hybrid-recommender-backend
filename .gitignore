@@ -25,6 +25,7 @@ data/encoded_amazon_vectors.csv
 data/scaled_encoded_amazon_vectors.csv
 data/encoded_amazon_vectors_new.csv
 data/sample_qi_vectors.csv
+/data/matched_amazon_reviews.jsonl
 
 scripts/testrandom.ipynb
 
