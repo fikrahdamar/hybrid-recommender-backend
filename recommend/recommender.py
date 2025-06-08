@@ -16,6 +16,7 @@ class HybridRecommender:
 
         self.index_to_asin = dict(zip(self.item_mapping['item_index'], self.item_mapping['asin']))
         self.index_to_title = dict(zip(self.item_mapping['item_index'], self.item_mapping['title']))
+        self.index_to_image = dict(zip(self.item_mapping['item_index'], self.item_mapping['image_url']))  
 
     def recommend(self, user_index, top_k=10, exclude_items=None):
         if user_index >= len(self.p_u):
