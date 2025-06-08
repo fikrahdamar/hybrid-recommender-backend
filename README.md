@@ -2,6 +2,9 @@
 
 Hybrid Recommender adalah sistem untuk merekomendasi film untuk tiap user menggunakan pendekatan Hybrid yaitu Collaborative filtering yang dimana menggunakan metode PMF untuk mendapatkan user latent factor dan juga Content-Based Filtering yang menggunakan LSTM (Long Short Term Memory) yang dimana untuk menghasilkan item latent factor yang optimal dan dikolaborasikan
 
+untuk melihat bagian front-end dari Hybrid Recommender ini bisa klik link dibawah :
+[Hybrid-Recommender-FrontEnd](https://github.com/iqbalraihanfr/hybrid-recommender-frontend)
+
 ## Setup
 
 jika anda ingin mencoba dari awal
